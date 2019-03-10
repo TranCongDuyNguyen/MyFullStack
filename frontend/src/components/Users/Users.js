@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios";
 
+import Register from './Register'
+
 export default class Users extends Component {
     constructor(props){
         super(props);
@@ -22,6 +24,7 @@ export default class Users extends Component {
         let { users } = this.state;
         return <div>
             {users.map((user) => (<div>{user.name}</div>))}
+            <Register/>
         </div>
     }
 
