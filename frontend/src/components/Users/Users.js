@@ -11,14 +11,14 @@ export default class Users extends Component {
         }
     }
 
-    componentDidMount(){
+   /* componentDidMount(){
         axios.get('/api/users')
         .then((res) => {
             this.setState({
                 users: res.data
             }, () => console.log(this.state.users))
         })
-    }
+    }*/
 
     render(){
         let { users } = this.state;
