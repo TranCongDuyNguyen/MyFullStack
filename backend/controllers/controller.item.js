@@ -12,10 +12,8 @@ module.exports.createItem = function(req, res, next){
         name: req.body.name   //body-parser allow this happens
     })
 
-    newItem.save(function(err){
-        if(err) return console.error(err);
-    })
-        .then(item => res.json(item)); //save item to DB
+    newItem.save().then(item => res.json(item)) 
+ 
 }
 
 module.exports.deleteItem = function(req, res, next){
