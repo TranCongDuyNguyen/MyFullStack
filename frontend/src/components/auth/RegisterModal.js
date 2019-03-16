@@ -6,10 +6,10 @@ import {
     ModalBody,
     Form,
     FormGroup,
+    FormText,
     Label,
     Input,
-    NavLink,
-    Alert
+    NavLink
 } from 'reactstrap';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -23,7 +23,7 @@ class RegisterModal extends Component {
         name: '',
         email: '',
         password: '',
-        msg: null
+        errors: {}
     }
 
     componentDidUpdate(prevProps) {
@@ -31,9 +31,9 @@ class RegisterModal extends Component {
         if(error !== prevProps.error){
             // Check for register error
             if(error.id === 'REGISTER_FAIL')
-             this.setState({ msg: error.msgs.msg })
+             this.setState({errors: error.msgs})
             else 
-            this.setState({ msg: null });
+            this.setState({ errors: {} });
         }
 
         //If authenticated, close modal
@@ -82,7 +82,7 @@ class RegisterModal extends Component {
                     toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Register</ModalHeader>
                     <ModalBody>
-                        { this.state.msg ? <Alert color="danger">{ this.state.msg }</Alert> : null}
+                       
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup> {/*replace for <div> instead*/}
                                 <Label for="name">Name</Label>
@@ -91,19 +91,28 @@ class RegisterModal extends Component {
                                         name="name"
                                         id="name"
                                         placeholder="Enter name"
-                                        className = "mb-3"
+                                        className = "mb-1"
                                         onChange={this.onChange}>
                                 </Input>
-
+                                
+                                { this.state.errors.name  ? <FormText color="danger"
+                                                                    className ="mb-1 ml-1">
+                                                                    <strong>{ this.state.errors.name }</strong>
+                                                            </FormText> : null}                     
                                 <Label for="email">Email</Label>
                                 <Input  
                                         type="text"
                                         name="email"
                                         id="email"
                                         placeholder="Your email"
-                                        className = "mb-3"
+                                        className = "mb-1"
                                         onChange={this.onChange}>
                                 </Input>
+
+                                { this.state.errors.email  ? <FormText color="danger"
+                                                                    className ="mb-1 ml-1">
+                                                                    <strong>{ this.state.errors.email }</strong>
+                                                            </FormText> : null}    
 
                                 <Label for="password">Password</Label>
                                 <Input  
@@ -111,9 +120,14 @@ class RegisterModal extends Component {
                                         name="password"
                                         id="password"
                                         placeholder="Your password"
-                                        className = "mb-3"
+                                        className = "mb-1"
                                         onChange={this.onChange}>
                                 </Input>
+
+                                { this.state.errors.password  ? <FormText color="danger"
+                                                                    className ="mb-1 ml-1">
+                                                                    <strong>{ this.state.errors.password }</strong>
+                                                            </FormText> : null}    
 
                                 <Button
                                         color="dark"

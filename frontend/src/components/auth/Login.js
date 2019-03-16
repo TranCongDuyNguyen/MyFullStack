@@ -6,6 +6,7 @@ import {
     ModalBody,
     Form,
     FormGroup,
+    FormText,
     Label,
     Input,
     NavLink,
@@ -22,7 +23,7 @@ class Login extends Component {
         modal: false,
         email: '',
         password: '',
-        msg: null
+        errors: {}
     }
 
     componentDidUpdate(prevProps) {
@@ -30,9 +31,9 @@ class Login extends Component {
         if(error !== prevProps.error){
             // Check for register error
             if(error.id === 'LOGIN_FAIL')
-             this.setState({ msg: error.msgs.msg })
+             this.setState({ errors: error.msgs })
             else 
-            this.setState({ msg: null });
+            this.setState({ errors: {} });
         }
 
         //If authenticated, close modal
@@ -91,9 +92,14 @@ class Login extends Component {
                                         name="email"
                                         id="email"
                                         placeholder="Your email"
-                                        className = "mb-3"
+                                        className = "mb-1"
                                         onChange={this.onChange}>
                                 </Input>
+
+                                { this.state.errors.email  ? <FormText color="danger"
+                                                                    className ="mb-1 ml-1">
+                                                                    <strong>{ this.state.errors.email }</strong>
+                                                            </FormText> : null}   
 
                                 <Label for="password">Password</Label>
                                 <Input  
@@ -101,10 +107,14 @@ class Login extends Component {
                                         name="password"
                                         id="password"
                                         placeholder="Your password"
-                                        className = "mb-3"
+                                        className = "mb-1"
                                         onChange={this.onChange}>
                                 </Input>
-
+                                
+                                { this.state.errors.password  ? <FormText color="danger"
+                                                                    className ="mb-1 ml-1">
+                                                                    <strong>{ this.state.errors.password }</strong>
+                                                            </FormText> : null}                                   
                                 <Button
                                         color="dark"
                                         style={{marginTop: '2rem'}}

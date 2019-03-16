@@ -14,6 +14,7 @@ import {
 import RegisterModal from './auth/RegisterModal';
 import Logout from './auth/Logout';
 import Login from './auth/Login';
+import './CSS/NavBarStyle.css';
 
     class TopNavBar extends Component {
         constructor(props) {
@@ -36,11 +37,11 @@ import Login from './auth/Login';
               const authLink = (
                 <>
                   <NavItem>
-                    <span className = "navbar-text mr-3">
+                    <span className = "navbar-text mr-3 text-white">
                       <strong>{user ? `Welcome ${user.name}` : ''}</strong>
                     </span>
                   </NavItem>
-                  <NavItem>
+                  <NavItem >
                     <Logout/>
                   </NavItem>
                 </>
@@ -58,9 +59,9 @@ import Login from './auth/Login';
               )
 
               return <div>
-                <Navbar  expand="md" className="mb-5 text-light bg-dark">
+                <Navbar  expand="md" className="mb-5 bg-dark">
                     <Container >
-                        <NavbarBrand href="/" >reactstrap</NavbarBrand>
+                        <NavbarBrand href="/" className ="nav-brand">Hello</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
