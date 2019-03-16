@@ -84,7 +84,12 @@ class ItemModal extends Component {
 }
 
 ItemModal.propTypes = {
-    addItem: PropTypes.func.isRequired
+    addItem: PropTypes.func.isRequired,// to prevent product displayed when not authenticated
+    isAuthenticated: PropTypes.bool
 }
 
-export default connect(null, {addItem})(ItemModal);
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, {addItem})(ItemModal);

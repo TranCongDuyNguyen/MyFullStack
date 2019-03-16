@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import {
     Collapse,
     Navbar,
@@ -9,7 +11,11 @@ import {
     NavLink,
     Container} from 'reactstrap';
 
-    export default class TopNavBar extends Component {
+import RegisterModal from './auth/RegisterModal';
+import Logout from './auth/Logout';
+import Login from './auth/Login';
+
+    class TopNavBar extends Component {
         constructor(props) {
             super(props);
         
@@ -25,19 +31,40 @@ import {
           }
 
           render(){
+              const { isAuthenticated, user } = this.props.auth;
+
+              const authLink = (
+                <>
+                  <NavItem>
+                    <span className = "navbar-text mr-3">
+                      <strong>{user ? `Welcome ${user.name}` : ''}</strong>
+                    </span>
+                  </NavItem>
+                  <NavItem>
+                    <Logout/>
+                  </NavItem>
+                </>
+              )
+
+              const guestLink = (
+                <>
+                  <NavItem>
+                    <Login/>
+                  </NavItem>
+                  <NavItem>
+                    <RegisterModal/>
+                  </NavItem>
+                </>
+              )
+
               return <div>
-                <Navbar color="dark" light expand="md" className="mb-5">
-                    <Container>
-                        <NavbarBrand href="/">reactstrap</NavbarBrand>
+                <Navbar  expand="md" className="mb-5 text-light bg-dark">
+                    <Container >
+                        <NavbarBrand href="/" >reactstrap</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <NavLink href="/components/">Components</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="https://github.com/reactstrap/reactstrap">GitHub</NavLink>
-                            </NavItem>
+                              { isAuthenticated ? authLink : guestLink}
                             </Nav>
                         </Collapse>
                     </Container>
@@ -45,3 +72,13 @@ import {
                 </div>
           }
     }
+
+    TopNavBar.propTypes = {
+      auth: PropTypes.object.isRequired
+    }
+
+    const mapStateToProps = state => ({
+      auth: state.auth
+    });
+
+    export default connect(mapStateToProps)(TopNavBar)
