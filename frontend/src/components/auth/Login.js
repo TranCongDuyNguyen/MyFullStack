@@ -16,6 +16,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {login} from '../../actions/authAction';
 import {clearErrors} from '../../actions/errorAction';
+import {withRouter} from 'react-router-dom';
 
 
 class Login extends Component {
@@ -45,6 +46,7 @@ class Login extends Component {
 
     }
 
+
     toggle = () => {
         // Clear errors
         this.props.clearErrors();
@@ -67,10 +69,8 @@ class Login extends Component {
         const newUser = {  email, password };
         //Attempt to log gin
         this.props.login(newUser);
-
-        
     }
-    debugger
+
     render() {
         return <div>
             <NavLink onClick={this.toggle} href="#">
@@ -131,7 +131,7 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    isAuthenticated: PropTypes.bool, //can be bool so not required
+    isAuthenticated: PropTypes.bool, //can be null so not required
     error: PropTypes.object.isRequired,
     login: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired

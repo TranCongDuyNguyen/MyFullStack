@@ -7,6 +7,6 @@ router.get('/', controller.fetchItems);
 
 router.post('/', authMiddleware, controller.createItem);
 
-router.delete('/:id', controller.deleteItem);
+router.delete('/:id', authMiddleware, controller.deleteItem);
 
 module.exports = router;

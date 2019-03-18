@@ -1,7 +1,7 @@
 import {GET_ERRORS, CLEAR_ERRORS} from '../actions/types';
 
 const initialState = {
-    msg: {}, //come from server
+    msgs: {}, //come from server
     status: null,
     id: null
 }
@@ -11,14 +11,14 @@ export default function(state = initialState, action) {
         case GET_ERRORS:
             return {
                 ...state,
-                msg: action.payload.msg,
+                msgs: action.payload.msg,
                 status: action.payload.status,
                 id: action.payload.id
             }
         case CLEAR_ERRORS:
             return {
                 ...state,
-                msg: {},
+                msgs: {},
                 status: null,
                 id: null
             }

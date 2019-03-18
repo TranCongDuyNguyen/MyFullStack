@@ -61,7 +61,7 @@ import './CSS/NavBarStyle.css';
               return <div>
                 <Navbar  expand="md" className="mb-5 bg-dark">
                     <Container >
-                        <NavbarBrand href="/" className ="nav-brand">Hello</NavbarBrand>
+                        <NavbarBrand href="/itemlist" className ="nav-brand">Hello</NavbarBrand>
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className="ml-auto" navbar>

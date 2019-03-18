@@ -4,12 +4,12 @@ function authMiddleware(req, res, next) {
     const token = req.header('x-auth-token');
 
     //check for token
-    if(!token) res.status(401).json({msg: "No token, unauthorization denied"});
+    if(!token) return res.status(401).json({msg: "No token, unauthorization denied"});
 
     try{
         //verify token, decoded user id from payload of JWT
         const decoded = jwt.verify(token, process.env.secret_key);
-        //add user from payload
+        //add user from payload of JWT
         req.user = decoded;
         next();
     } catch(e) {

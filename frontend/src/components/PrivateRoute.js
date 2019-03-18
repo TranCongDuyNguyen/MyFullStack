@@ -7,9 +7,9 @@ import PropTypes from "prop-types";
 
 const PrivateRoute = ({ component: Component, auth, ...rest }) => {
 
-  /*if(localStorage.token) {
+  if(localStorage.token) {
     auth.isAuthenticated = true;
-  }*/
+  }
   
   return (<Route
     {...rest}
@@ -22,6 +22,8 @@ const PrivateRoute = ({ component: Component, auth, ...rest }) => {
     }
   />) 
 };
+
+
 
 PrivateRoute.propTypes = {
   auth: PropTypes.object.isRequired

@@ -2,23 +2,19 @@ const User = require('../models/model.users');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-module.exports.fetchUsers = function(req, res, next){
-    // User.find()
-    //     .sort({register_date: -1})
-    //     .then(res => res.json())
-    res.send('dia dia')
-}
+const validator = require('../validators/validator.register');
 
 module.exports.createUser = function(req, res, next){
     const {name, email, password} = req.body;
+    const { errors, isValid } = validator(req.body);
     //simple validation
-    if (!name || !email || !password){
-        return res.status(400).json({msg: "Please enter all fields"});
+    if (!isValid){
+        return res.status(400).json(errors);
     }
     // check existed user
     User.findOne({email})
     .then(user => {
-        if(user) return res.status(400).json({msg: "User already exists"});
+        if(user) return res.status(400).json({email: "Email already exists"});
     })
     //create new user
     const newUser = new User({
