@@ -8,7 +8,7 @@ const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 5000;
-app.listen(port, () => console.log("Hello") );
+app.listen(port, () => console.log(`Server starts on port ${port}`) );
 
 //Body-parser to read body req
 app.use(express.json()); // for parsing application/json, express provide its own body-parser
@@ -17,6 +17,7 @@ app.use(express.json()); // for parsing application/json, express provide its ow
 app.use('/api/users', require('./routes/api/route.users'));
 app.use('/api/items', require('./routes/api/route.items'));
 app.use('/api/auth', require('./routes/api/route.auth'));
+app.use('/api/motors', require('./routes/api/route.motors'));
 
 /*
 //Serve static assets if in production

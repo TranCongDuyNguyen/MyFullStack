@@ -16,7 +16,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {login} from '../../actions/authAction';
 import {clearErrors} from '../../actions/errorAction';
-import {withRouter} from 'react-router-dom';
+
 
 
 class Login extends Component {
@@ -24,7 +24,8 @@ class Login extends Component {
         modal: false,
         email: '',
         password: '',
-        errors: {}
+        errors: {},
+        redirectToReferrer: true
     }
 
     componentDidUpdate(prevProps) {
@@ -41,11 +42,10 @@ class Login extends Component {
         if (this.state.modal) {
             if(isAuthenticated) {
                 this.toggle();
+                
             };
         };
-
     }
-
 
     toggle = () => {
         // Clear errors
@@ -72,6 +72,7 @@ class Login extends Component {
     }
 
     render() {
+
         return <div>
             <NavLink onClick={this.toggle} href="#">
                 Log In

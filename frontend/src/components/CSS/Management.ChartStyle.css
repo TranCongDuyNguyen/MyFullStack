@@ -1,0 +1,37 @@
+.container.parameter-display {
+    display: flex;
+    height: 18rem;
+}
+  
+.parameter-display .current-box {
+    box-shadow: 0.065rem 0.065rem rgb(182, 182, 182);
+    position: relative;
+}
+.parameter-display .voltage-box {
+    box-shadow: 0.065rem 0.065rem rgb(182, 182, 182);
+    position: relative;
+}
+.parameter-display .gradient-box .text {
+    font-size: 2rem;
+    top: 3.3rem;
+    left: 3.3rem;
+    position: absolute;
+}
+
+
+.gradient-box {
+    margin-top: 2rem;
+    border-image: linear-gradient(to right, #b861c6 0%,#ffc7c7 100%);
+    border-image-slice: 1;
+    border-width: 2px;
+    height: 10rem;
+    width: 10rem;
+    display: block;
+    background: black;
+    color: white;
+  }
+
+.gradient-box.current-box {
+    border-image: linear-gradient(to left, #61c69d 0%, #2d72bc 100%);
+}
+

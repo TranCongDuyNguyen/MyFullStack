@@ -1,0 +1,10 @@
+.recharts-wrapper {
+    position: absolute;
+    top: -2.45rem;
+    right: 2.65rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 14rem;
+    width: 14rem;
+}

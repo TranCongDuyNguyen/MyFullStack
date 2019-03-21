@@ -1,44 +1,116 @@
 import React, { Component } from "react";
+import {
+  Container, 
+  Row, 
+  Col, 
+  Card, 
+  CardImg,
+  CardTitle,
+  CardBody,
+  CardText,
+  Button
+} from 'reactstrap';
+
+import './CSS/LandingStyle.css';
+import ArrowButton from '../images/arrow-button.svg';
+import ManagementPic from '../images/management.jpg';
+import VirtualizationPic from '../images/virtualization.jpg';
+import NavigationPic from '../images/navigation.jpg'
+
 class Landing extends Component {
   render() {
     return (
-      <div style={{ height: "75vh" }} className="container valign-wrapper">
-        <div className="row">
-          <div className="col s12 center-align">
-            <h4>
-              <b>Build</b> a login/auth app with the{" "}
-              <span style={{ fontFamily: "monospace" }}>MERN</span> stack from
-              scratch
-            </h4>
-            <p className="flow-text grey-text text-darken-1">
-              Create a (minimal) full-stack app with user authentication via
-              passport and JWTs
-            </p>
-            <br />
-            <a
-              style={{
-                width: "8rem",
-                borderRadius: "3px",
-                letterSpacing: "0.3rem"
-              }}
-              className="btn btn-large waves-effect waves-light hoverable blue accent-3"
-            >
-              Register
-            </a>
-            <a
-              style={{
-                marginLeft: "2rem",
-                width: "8rem",
-                borderRadius: "3px",
-                letterSpacing: "0.3rem"
-              }}
-              className="btn btn-large waves-effect white hoverable black-text"
-            >
-              Log In
-            </a>
+      <Container>
+        <Row>
+          <h3 className = "headline"> Ho Chi Minh University of Technology </h3>
+        </Row>
+        <Row className = "mb-5">
+          <h4 className="sub-headline">Graduation Thesis</h4>
+        </Row>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        
+        <Row>
+          <Col md = "4">
+            <Card>
+              <CardImg top width="100%" height="10vw" src={ManagementPic} />
+              <CardBody>
+                <CardTitle>Management</CardTitle>
+                <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+                <Button href="/management" right><img className ="arrow-btn"src={ArrowButton}></img></Button>
+              </CardBody>
+            </Card>
+          </Col>
+
+          <Col md = "4">
+            <Card>
+              <CardImg top width="100%" height="10vw" src={NavigationPic} />
+              <CardBody>
+                <CardTitle>Navigation</CardTitle>
+                <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+                <Button right><img className ="arrow-btn"src={ArrowButton}></img></Button>
+              </CardBody>
+            </Card>
+          </Col>
+          
+          <Col md = "4">
+            <Card>
+              <CardImg top width="100%" height="10vw" src={VirtualizationPic} />
+              <CardBody>
+                <CardTitle>Virtualization</CardTitle>
+                <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+                <Button right><img className ="arrow-btn"src={ArrowButton}></img></Button>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+        <br/>
+
+        <footer className="footer-distributed">
+          <div className="footer-left">
+            <h3>Company<span>logo</span></h3>
+
+            <div className="footer-links">
+            <div>Thesis.</div>
+            </div>
+
+            <p className="footer-company-name">HCMUT &copy; 2019</p>
           </div>
-        </div>
-      </div>
+
+          <div className="footer-center">
+            <div>
+            <i className="fa fa-map-marker"></i>
+            <p><span>268 Lý Thường Kiệt, Phường 14, Quận 10</span> Hồ Chí Minh</p>
+            </div>
+
+            <div>
+              <i className="fa fa-phone"></i>
+              <p>+033 378 2879</p>
+            </div>
+
+            <div>
+              <i className="fa fa-envelope"></i>
+              <p><a href="mailto:support@company.com">tdcnguyen1997@gmail.com</a></p>
+            </div>
+          </div>
+
+          <div className="footer-right">
+            <p className="footer-company-about">
+              <span>About the thesis</span>
+              Lorem ipsum dolor sit amet, consectateur adispicing elit. Fusce euismod convallis velit, eu auctor lacus vehicula sit amet.
+            </p>
+
+            <div className="footer-icons">
+            <a href="#"><i className="fa fa-facebook"></i></a>
+            <a href="#"><i className="fa fa-twitter"></i></a>
+            <a href="#"><i className="fa fa-linkedin"></i></a>
+            <a href="#"><i className="fa fa-github"></i></a>
+            </div>
+          </div>
+		</footer>
+      </Container>
     );
   }
 }

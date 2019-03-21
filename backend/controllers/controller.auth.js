@@ -1,4 +1,4 @@
-const User = require('../models/model.users');
+const User = require('../models/model.user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -26,7 +26,7 @@ module.exports.login = function(req, res, next){
              jwt.sign(
                 {id :user.id},
                 process.env.secret_key,
-                { expiresIn: '1h'},
+                { expiresIn: '3h'},
                 (err, token) => {
                     if(err) throw err;
                     res.json({

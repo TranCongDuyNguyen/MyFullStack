@@ -13,7 +13,7 @@ function authMiddleware(req, res, next) {
         req.user = decoded;
         next();
     } catch(e) {
-        res.status(400).json({msg: 'Token is not valid', token: token,e: e})
+        res.status(400).json({msg: 'Token is not valid', token: token, e: e})
     }
 }
 

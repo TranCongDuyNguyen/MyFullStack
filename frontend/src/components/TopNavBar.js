@@ -8,7 +8,10 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
     Container} from 'reactstrap';
 
 import RegisterModal from './auth/RegisterModal';
@@ -37,11 +40,11 @@ import './CSS/NavBarStyle.css';
               const authLink = (
                 <>
                   <NavItem>
-                    <span className = "navbar-text mr-3 text-white">
+                    <span className = "navbar-text text-white align-center">
                       <strong>{user ? `Welcome ${user.name}` : ''}</strong>
                     </span>
                   </NavItem>
-                  <NavItem >
+                  <NavItem className = "ml-3">
                     <Logout/>
                   </NavItem>
                 </>
@@ -59,15 +62,35 @@ import './CSS/NavBarStyle.css';
               )
 
               return <div>
-                <Navbar  expand="md" className="mb-5 bg-dark">
+                <Navbar  expand="md" className="navbar navbar-expand-md navbar-dark mb-5 bg-dark">
                     <Container >
-                        <NavbarBrand href="/itemlist" className ="nav-brand">Hello</NavbarBrand>
+                        <NavbarBrand href="/" className ="nav-brand">Home</NavbarBrand>
+
                         <NavbarToggler onClick={this.toggle} />
-                        <Collapse isOpen={this.state.isOpen} navbar>
+                        <Collapse isOpen={this.state.isOpen} navbar={true}>
                             <Nav className="ml-auto" navbar>
                               { isAuthenticated ? authLink : guestLink}
                             </Nav>
                         </Collapse>
+
+                        <UncontrolledDropdown nav-brand ="true" inNavbar className = "col-md-1">
+                          <DropdownToggle caret>
+                            Options
+                          </DropdownToggle>
+                          <DropdownMenu left="true">
+                            <DropdownItem tag ="a" href ="/itemlist" active>
+                              Item
+                            </DropdownItem>
+                            <DropdownItem tag="a" href="/management" active>
+                              Management
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem>
+                              Reset
+                            </DropdownItem>
+                        </DropdownMenu>
+                        </UncontrolledDropdown>
+
                     </Container>
                 </Navbar>
                 </div>
