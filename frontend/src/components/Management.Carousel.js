@@ -5,7 +5,6 @@ import {
   CarouselControl,
   CarouselIndicators,
   CarouselCaption,
-  Container,
   Row,
   Col
 } from 'reactstrap';
@@ -79,7 +78,8 @@ export default class ManagementCarousel extends Component {
           onExiting={this.onExiting}
           onExited={this.onExited}
         >
-          <ManagementChart/>
+         { ( item.id !== 1 && item.id !== 2 )  && <ManagementChart key={item.id}/> }
+         
           <CarouselCaption className="text-light" captionText={item.caption}  />
         </CarouselItem>
       );
@@ -111,7 +111,7 @@ export default class ManagementCarousel extends Component {
             </Carousel>
           </Col>
         </Row>
-   
+        
       </div>
     )
   }

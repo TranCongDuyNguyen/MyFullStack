@@ -10,7 +10,7 @@ import VolDChart from './charts/VolDChart';
 import AmpDChart from './charts/AmpDChart';
 
 export default class ManagementDoughChart extends Component {
- 
+
   render() {
     return (
       <div>
@@ -20,14 +20,16 @@ export default class ManagementDoughChart extends Component {
             
             </Col>
             <Col md="3">
-              <button className = "current-box gradient-box" style={{paddingBottom: "6rem" ,marginBottom: "2rem"}}>
+              <button className = "current-box gradient-box" 
+                      style={{paddingBottom: "6rem" ,marginBottom: "2rem"}}
+              >
                   <VolDChart/>
                   <div className="text">15%</div>
                   
                 
               </button>
               <button className = "voltage-box gradient-box" style={{paddingBottom: "6rem"}}>
-                  <AmpDChart/>
+                  <AmpDChart />
                   <div className="text">15%</div>
                 
               </button>
