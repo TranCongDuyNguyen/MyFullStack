@@ -20,6 +20,8 @@
     "is-empty": "^1.2.0",
     "jsonwebtoken": "^8.5.0",
     "mongoose": "^5.4.17",
+    "mqtt": "^2.18.8",
+    "socket.io": "^2.2.0",
     "validator": "^10.11.0"
   },
   "devDependencies": {

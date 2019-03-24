@@ -30,18 +30,35 @@ class AmpDChart extends Component {
 
     componentDidMount() {
         this.props.getMotor();
-
+        this.props.socket.emit("subscribeTimer", 3000); // get cycled-data from server
     }
-    //update amp from DB
-    componentWillReceiveProps(nextProps) {
-        const {motor} = nextProps
-        if ( (motor !== this.props.motor) && (motor.motors.length !==0) ) {
-            this.newData[0].amp = motor.motors[0].amp
+
+    componentDidUpdate() {
+        
+        this.props.socket.on("dataFromApi", motorObj => {
+            this.newData[0].amp = motorObj.amp;
+            console.log(motorObj);
             this.setState((state, props) => ({
                 data: this.newData
             }))
-        }
+        } )
+       
     }
+
+    componentWillUnmount() {
+        this.props.socket.disconnect();
+    }
+
+    //update amp from DB
+    // componentWillReceiveProps(nextProps) {
+    //     const {motor} = nextProps
+    //     if ( (motor !== this.props.motor) && (motor.motors.length !==0) ) {
+    //         this.newData[0].amp = motor.motors[0].amp
+    //         this.setState((state, props) => ({
+    //             data: this.newData
+    //         }))
+    //     }
+    // }
 
 
 
