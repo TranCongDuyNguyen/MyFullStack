@@ -9,7 +9,7 @@ import {
   Col
 } from 'reactstrap';
 
-
+import "./CSS/CarouselStyle.css";
 import ManagementChart from './Management.Chart';
 
 const items = [
@@ -22,11 +22,6 @@ const items = [
     id: 2,
     altText: 'Slide 2',
     caption: 'Slide 2'
-  },
-  {
-    id: 3,
-    altText: 'Slide 3',
-    caption: 'Slide 3'
   }
 ];
 
@@ -78,7 +73,7 @@ export default class ManagementCarousel extends Component {
           onExiting={this.onExiting}
           onExited={this.onExited}
         >
-         { ( item.id !== 1 && item.id !== 2 )  && <ManagementChart key={item.id}/> }
+         { ( item.id !== 2 )  && <ManagementChart key={item.id}/> }
          
           <CarouselCaption className="text-light" captionText={item.caption}  />
         </CarouselItem>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
     Button,
     Modal,
@@ -8,16 +8,18 @@ import {
     FormGroup,
     FormText,
     Label,
-    Input,
-    NavLink,
-    Alert
+    NavLink
 } from 'reactstrap';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {login} from '../../actions/authAction';
-import {clearErrors} from '../../actions/errorAction';
+import classNames from 'classnames';
 
+import { login } from '../../actions/authAction';
+import { clearErrors } from '../../actions/errorAction';
+import '../CSS/InputStyle.css';
+import AlertIcon from '../.././images/alert-login.svg';
 
+let isTextChange = false;
 
 class Login extends Component {
     state = {
@@ -30,19 +32,19 @@ class Login extends Component {
 
     componentDidUpdate(prevProps) {
         const { error, isAuthenticated } = this.props;
-        if(error !== prevProps.error){
+        if (error !== prevProps.error) {
+            isTextChange = false;
             // Check for register error
-            if(error.id === 'LOGIN_FAIL')
-             this.setState({ errors: error.msgs })
-            else 
-            this.setState({ errors: {} });
+            if (error.id === 'LOGIN_FAIL')
+                this.setState({ errors: error.msgs })
+            else
+                this.setState({ errors: {} });
         }
 
         //If authenticated, close modal
         if (this.state.modal) {
-            if(isAuthenticated) {
+            if (isAuthenticated) {
                 this.toggle();
-                
             };
         };
     }
@@ -56,6 +58,7 @@ class Login extends Component {
     }
 
     onChange = (e) => {
+        isTextChange = true;
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -65,13 +68,26 @@ class Login extends Component {
         e.preventDefault();
 
         //Create user obj
-        const {  email, password } = this.state;
-        const newUser = {  email, password };
+        const { email, password } = this.state;
+        const newUser = { email, password };
         //Attempt to log gin
         this.props.login(newUser);
     }
 
+    isEmpty = (obj) => {
+        for (let prop in obj) {
+            if (obj.hasOwnProperty(prop))
+                return false;
+        }
+        return JSON.stringify(obj) === JSON.stringify({});
+    }
+
     render() {
+
+        var formInput = classNames({
+            'form-input': true,
+            'form-input-alert': !this.isEmpty(this.state.errors) && !isTextChange
+        })
 
         return <div>
             <NavLink onClick={this.toggle} href="#">
@@ -79,52 +95,55 @@ class Login extends Component {
             </NavLink>
 
             <Modal
-                    isOpen={this.state.modal}
-                    toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Login</ModalHeader>
-                    <ModalBody>
-                        { this.state.msg ? <Alert color="danger">{ this.state.msg }</Alert> : null}
-                        <Form onSubmit={this.onSubmit}>
-                            <FormGroup> {/*replace for <div> instead*/}
-                               
-                                <Label for="email">Email</Label>
-                                <Input  
-                                        type="text"
-                                        name="email"
-                                        id="email"
-                                        placeholder="Your email"
-                                        className = "mb-1"
-                                        onChange={this.onChange}>
-                                </Input>
+                isOpen={this.state.modal}
+                toggle={this.toggle}>
+                <ModalHeader toggle={this.toggle}>Login</ModalHeader>
+                <ModalBody>
+                    <Form onSubmit={this.onSubmit}>
+                        <FormGroup> {/*replace for <div> instead*/}
 
-                                { this.state.errors.email  ? <FormText color="danger"
-                                                                    className ="mb-1 ml-1">
-                                                                    <strong>{ this.state.errors.email }</strong>
-                                                            </FormText> : null}   
+                            <Label for="email">Email</Label>
+                            <input
+                                type="text"
+                                name="email"
+                                id="email"
+                                placeholder="Your email"
+                                className={formInput}
+                                onChange={this.onChange}>
+                            </input>
 
-                                <Label for="password">Password</Label>
-                                <Input  
-                                        type="password"
-                                        name="password"
-                                        id="password"
-                                        placeholder="Your password"
-                                        className = "mb-1"
-                                        onChange={this.onChange}>
-                                </Input>
-                                
-                                { this.state.errors.password  ? <FormText color="danger"
-                                                                    className ="mb-1 ml-1">
-                                                                    <strong>{ this.state.errors.password }</strong>
-                                                            </FormText> : null}                                   
-                                <Button
-                                        color="dark"
-                                        style={{marginTop: '2rem'}}
-                                        block>
-                                    Log in
+                            {this.state.errors.email ? <FormText color="danger"
+                                className="mb-1 ml-1">
+                                <img src={AlertIcon} className="alert-icon" alt=""></img>
+                                <strong>
+                                    {this.state.errors.email}
+                                </strong>
+                            </FormText> : null}
+
+                            <Label for="password">Password</Label>
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                placeholder="Your password"
+                                className={formInput}
+                                onChange={this.onChange}>
+                            </input>
+
+                            {this.state.errors.password ? <FormText color="danger"
+                                className="mb-1 ml-1">
+                                <img src={AlertIcon} className="alert-icon" alt=""></img>
+                                <strong>{this.state.errors.password}</strong>
+                            </FormText> : null}
+                            <Button
+                                color="dark"
+                                style={{ marginTop: '2rem' }}
+                                block>
+                                Log in
                                 </Button>
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
+                        </FormGroup>
+                    </Form>
+                </ModalBody>
             </Modal>
 
         </div>
@@ -143,4 +162,4 @@ const mapStateToProps = state => ({
     error: state.error
 })
 
-export default connect( mapStateToProps, {login, clearErrors} )(Login);
+export default connect(mapStateToProps, { login, clearErrors })(Login);

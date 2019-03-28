@@ -5,10 +5,13 @@ import {
     RadialBar
 } from 'recharts';
 import PropTypes from 'prop-types';
+import io from "socket.io-client";
 
 import '../CSS/Management.DCStyle.css';
-
 import { getMotor } from '../../actions/motorAction';
+
+
+const socket = io('http://localhost:5000');
 
 class AmpDChart extends Component {
 
@@ -16,7 +19,7 @@ class AmpDChart extends Component {
         data: [
             {
                 name: "Current",
-                amp: 0,
+                amp: 50,
                 fill: '#d0ed57'
             },
             {
@@ -28,53 +31,19 @@ class AmpDChart extends Component {
     }
     newData = JSON.parse(JSON.stringify(this.state.data)); //deep clone
 
-    componentDidMount() {
-        this.props.getMotor();
-        this.props.socket.emit("subscribeTimer", 3000); // get cycled-data from server
-    }
-
-    componentDidUpdate() {
-        
-        this.props.socket.on("dataFromApi", motorObj => {
-            this.newData[0].amp = motorObj.amp;
-            console.log(motorObj);
-            this.setState((state, props) => ({
-                data: this.newData
-            }))
-        } )
-       
-    }
-
-    componentWillUnmount() {
-        this.props.socket.disconnect();
-    }
-
-    //update amp from DB
-    // componentWillReceiveProps(nextProps) {
-    //     const {motor} = nextProps
-    //     if ( (motor !== this.props.motor) && (motor.motors.length !==0) ) {
-    //         this.newData[0].amp = motor.motors[0].amp
-    //         this.setState((state, props) => ({
-    //             data: this.newData
-    //         }))
-    //     }
-    // }
-
-
-
     render() {
-
+        const {data} = this.state; 
         return (
             <div>
+                <div className="text">{data[0].amp.toString().slice(0,4)}%</div>
                 <RadialBarChart
-                    ref={(ref) => this.chart = ref}
                     height={230}
                     width={230}
                     innerRadius="50%"
                     outerRadius="80%"
                     startAngle={360}
                     endAngle={0}
-                    data={this.state.data}
+                    data={data}
                     barSize={120}
                     barCategoryGap={1}
                 >
@@ -85,22 +54,44 @@ class AmpDChart extends Component {
                         clockWise={true}
                         dataKey={"amp"}
                     />
-
+                    
                 </RadialBarChart>
             </div>
         )
     }
+
+    componentDidMount() {
+        this.props.getMotor();
+        socket.emit("subscribeMotorData"); // get cycled-data from server
+        socket.on("apiMotorData", function (motorObj) {
+            this.newData[0].amp = motorObj.amp;
+            this.setState((state) => {
+                return {
+                    data: state.data.slice()
+                }
+            });
+            this.setState((state) => {
+                return {
+                    data: this.newData
+                }
+            });
+        }.bind(this));
+        console.log(this.state.data[0].amp);
+    };
+
+    componentWillUnmount() {
+        socket.disconnect();
+    };
 }
 
 AmpDChart.propTypes = {
     getMotor: PropTypes.func.isRequired,
-    motor: PropTypes.object.isRequired 
+    motor: PropTypes.object.isRequired
 }
 
 const mapStateToProps = state => {
     return { motor: state.motor };
 }
-
 
 
 export default connect(mapStateToProps, { getMotor })(AmpDChart);

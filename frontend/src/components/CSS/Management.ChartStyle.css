@@ -4,34 +4,50 @@
 }
   
 .parameter-display .current-box {
-    box-shadow: 0.065rem 0.065rem rgb(182, 182, 182);
+    color: white;
+    border: solid 0.04em rgba(255, 255, 255, 0.452); 
+    background-color: #000;
+    margin-bottom: 2rem;
+    height: 10em;
+    width: 16em;
+    margin-top: 2em;
+    border-radius: 1.4em;
+    box-shadow: 0 0 0.4em 0.1em rgb(199, 255, 236);
     position: relative;
 }
 .parameter-display .voltage-box {
-    box-shadow: 0.065rem 0.065rem rgb(182, 182, 182);
+    color: white;
+    border: solid 0.04em rgba(255, 255, 255, 0.452); 
+    background-color: #000;
+    margin-bottom: 2rem;
+    height: 10em;
+    width: 16em;
+    margin-top: 2em;
+    border-radius: 1.4em;
+    box-shadow: 0 0 0.4em 0.1em #ffc7c7ff;
     position: relative;
 }
-.parameter-display .gradient-box .text {
-    font-size: 2rem;
-    top: 3.3rem;
-    left: 3.3rem;
+
+.recharts-wrapper {
     position: absolute;
+    top: -2.45rem;
+    right: -0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 14rem;
+    width: 14rem;
+    color: white;
 }
 
-
-.gradient-box {
-    margin-top: 2rem;
-    border-image: linear-gradient(to right, #b861c6 0%,#ffc7c7 100%);
-    border-image-slice: 1;
-    border-width: 2px;
-    height: 10rem;
-    width: 10rem;
-    display: block;
-    background: black;
-    color: white;
-  }
-
-.gradient-box.current-box {
-    border-image: linear-gradient(to left, #61c69d 0%, #2d72bc 100%);
+.recharts-responsive-container.motor-area-chart{
+    height: 100%!important;
+    position: absolute;
+    top: 20em;
+    left: -56em;
+}
+.recharts-responsive-container.motor-area-chart .recharts-surface {
+    height: 30rem!important;
+    width: 46rem!important;
 }
 

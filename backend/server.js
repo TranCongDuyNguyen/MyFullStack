@@ -7,18 +7,9 @@ const port = process.env.PORT || 5000;
 const http = require('http').Server(app)
 const io = require('socket.io')(http); //IO Socket
 const mqtt = require('mqtt');
-const client = mqtt.connect('mqtt://127.0.0.1:1883');
 
-http.listen(port, function(){
-    console.log(`Server starts on port ${port}`);
-  });
-
-/* <====================================MQTT CONNECTION AND SUBSCRIBE==================================> */
-client.on("connect", function () {
-	console.log("MQTT connected");
-	client.subscribe('tcdn', function (err) {
-		console.log(err);
-	});
+http.listen(port, function () {
+	console.log(`Server starts on port ${port}`);
 });
 
 //Body-parser to read body req
@@ -44,37 +35,47 @@ if (process.env.NODE_ENV === 'production') {
 
 //connect to mongoDB
 mongoose.connect(process.env.mongo_url, {
-    useNewUrlParser: true,
-    useCreateIndex: true
+	useNewUrlParser: true,
+	useCreateIndex: true
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.log(err));
+	.then(() => console.log('Connected to MongoDB'))
+	.catch(err => console.log(err));
 
-/*<===================================IO SOCKET=============================================================>*/
-let intervalId;
+/*<===========================================IO SOCKET=======================================================>*/
+/*<============================================MQTT CONNECTION AND SUBSCRIBE==================================> */
+
+const client = mqtt.connect('mqtt://127.0.0.1:1883', {
+	clientId: "my-client",
+	username: "admin",
+	password: "admin"
+});
+
+client.on("connect", function () {
+	console.log("MQTT connected");
+});
+
+client.on("error", function (err) {
+	console.log(err);
+	client.end();
+})
+
+client.subscribe('tcdn', function (err) {
+	console.log(err);
+});
+
 io.on('connection', function (socket) {
 	console.log('server-side socket connected');
-	if (intervalId) {
-		clearInterval(intervalId);
-	}
-	socket.on("subscribeTimer", (interval) => {
-		console.log('client is subscribing timer with interval');
-		intervalId = setInterval(
-			() => {
-				client.on("message", function(topic, message) {
-                    socket.emit("dataFromApi", JSON.parse(message));
-                    console.log(message);
-                })
-				console.log('emitted');
-			}, interval
-		)
+
+	socket.on("subscribeMotorData", () => {
+		console.log('client is subscribing ');
+		client.on("message", function (topic, message) {
+			socket.emit("apiMotorData", JSON.parse(message.toString()));
+			console.log('emitted');
+		});
 	});
+
 	socket.on("disconnect", () => {
 		console.log("Disconnect");
-		clearInterval(intervalId);
-	})
-	// client.on("message", function(topic, message) {
-	// 	socket.emit("numbApi", message.toString());
-	// })
+	});
 });
 

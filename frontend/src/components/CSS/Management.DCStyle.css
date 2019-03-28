@@ -1,10 +1,6 @@
-.recharts-wrapper {
+.text {
+    font-size: 1.6rem;
+    top: 3.3rem;
+    left: 6.4rem;
     position: absolute;
-    top: -2.45rem;
-    right: 2.65rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 14rem;
-    width: 14rem;
 }

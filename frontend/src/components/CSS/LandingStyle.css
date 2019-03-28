@@ -5,7 +5,7 @@
     text-align: center;
     font-weight: normal;
     color: #222;
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.25em;
 }
 
 .container .row .sub-headline {
@@ -68,19 +68,28 @@
 .card .btn:hover {
     background-color: white;
     border-color: #4e555b;
-    
 }
-
+.card .btn:active {
+	background-color: white!important;
+	border-color: white!important;
+}
+.card .btn:focus {
+	background-color: white!important;
+	border-color: white!important;
+	box-shadow:  none!important;
+}
 .card .btn .arrow-btn {
-    height: 1.25rem;
-    width: 1.25rem;
+    height: 1.25em;
+    width: 1.25em;
     opacity: 0.7;
 }
 
 .card .btn .arrow-btn:hover {
     opacity: 1;
 }
-
+.card .btn .arrow-btn:focus {
+	outline: none;
+}
 .footer-distributed{
 	background-color: #292c2f;
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);

@@ -8,14 +8,18 @@ import {
     FormGroup,
     FormText,
     Label,
-    Input,
     NavLink
 } from 'reactstrap';
+import classNames from 'classnames';
+
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {register} from '../../actions/authAction';
 import {clearErrors} from '../../actions/errorAction';
+import '../CSS/InputStyle.css';
+import AlertIcon from '../.././images/alert-login.svg';
 
+let isTextChange = false;
 
 class RegisterModal extends Component {
     state = {
@@ -29,6 +33,7 @@ class RegisterModal extends Component {
     componentDidUpdate(prevProps) {
         const { error, isAuthenticated } = this.props;
         if(error !== prevProps.error){
+            isTextChange = false;
             // Check for register error
             if(error.id === 'REGISTER_FAIL')
              this.setState({errors: error.msgs})
@@ -54,6 +59,7 @@ class RegisterModal extends Component {
     }
 
     onChange = (e) => {
+        isTextChange = true;
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -70,8 +76,23 @@ class RegisterModal extends Component {
 
         
     }
-    debugger
+    
+    isEmpty = (obj) => {
+        for(let prop in obj) {
+            if(obj.hasOwnProperty(prop))
+                return false;
+        }
+        return JSON.stringify(obj) === JSON.stringify({});
+    }
+
+
     render() {
+
+        var formInput = classNames({
+            'form-input': true,
+            'form-input-alert': !this.isEmpty(this.state.errors) && !isTextChange
+        })
+
         return <div>
             <NavLink onClick={this.toggle} href="#">
                 Register
@@ -86,46 +107,49 @@ class RegisterModal extends Component {
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup> {/*replace for <div> instead*/}
                                 <Label for="name">Name</Label>
-                                <Input  
+                                <input  
                                         type="text"
                                         name="name"
                                         id="name"
                                         placeholder="Enter name"
-                                        className = "mb-1"
+                                        className = {formInput}
                                         onChange={this.onChange}>
-                                </Input>
+                                </input>
                                 
                                 { this.state.errors.name  ? <FormText color="danger"
                                                                     className ="mb-1 ml-1">
+                                                                    <img src={AlertIcon} className="alert-icon" alt=""></img>
                                                                     <strong>{ this.state.errors.name }</strong>
                                                             </FormText> : null}                     
                                 <Label for="email">Email</Label>
-                                <Input  
+                                <input  
                                         type="text"
                                         name="email"
                                         id="email"
                                         placeholder="Your email"
-                                        className = "mb-1"
+                                        className = {formInput}
                                         onChange={this.onChange}>
-                                </Input>
+                                </input>
 
                                 { this.state.errors.email  ? <FormText color="danger"
                                                                     className ="mb-1 ml-1">
+                                                                    <img src={AlertIcon} className="alert-icon" alt=""></img>
                                                                     <strong>{ this.state.errors.email }</strong>
                                                             </FormText> : null}    
 
                                 <Label for="password">Password</Label>
-                                <Input  
+                                <input  
                                         type="password"
                                         name="password"
                                         id="password"
                                         placeholder="Your password"
-                                        className = "mb-1"
+                                        className = {formInput}
                                         onChange={this.onChange}>
-                                </Input>
+                                </input>
 
                                 { this.state.errors.password  ? <FormText color="danger"
                                                                     className ="mb-1 ml-1">
+                                                                    <img src={AlertIcon} className="alert-icon" alt=""></img>
                                                                     <strong>{ this.state.errors.password }</strong>
                                                             </FormText> : null}    
 

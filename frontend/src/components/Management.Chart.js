@@ -4,12 +4,15 @@ import {
   Row,
   Col
 } from 'reactstrap';
-import io from "socket.io-client";
+import {
+  ResponsiveContainer
+} from 'recharts';
 
 import './CSS/Management.ChartStyle.css';
 import VolDChart from './charts/VolDChart';
 import AmpDChart from './charts/AmpDChart';
-const socket = io('http://localhost:5000');
+import MotorAreaChart from './charts/MotorAreaChart';
+
 export default class ManagementDoughChart extends Component {
 
   render() {
@@ -17,25 +20,25 @@ export default class ManagementDoughChart extends Component {
       <div>
         <Container className="parameter-display">
           <Row style={{ width: "100%" }}>
-            <Col md="9">
-
-            </Col>
-            <Col md="3">
-              <button className="current-box gradient-box"
-                style={{ paddingBottom: "6rem", marginBottom: "2rem" }}
+            <Col  md="6">
+            <div className="current-box"
+                style={{ marginBottom: "2rem" }}
               >
-                <VolDChart />
-                <div className="text">15%</div>
-
-
-              </button>
-              <button className="voltage-box gradient-box" style={{ paddingBottom: "6rem" }}>
-                <AmpDChart socket={socket} />
-                <div className="text">15%</div>
-
-              </button>
+                <AmpDChart/>
+              </div>
             </Col>
-
+            <Col md="6">
+              <div className="voltage-box" >
+                <VolDChart/>
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            <ResponsiveContainer className = "motor-area-chart">
+              <MotorAreaChart />
+            </ResponsiveContainer>
+            </Col>
           </Row>
         </Container>
 
