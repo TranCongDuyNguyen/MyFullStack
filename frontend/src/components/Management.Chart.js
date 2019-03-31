@@ -9,9 +9,9 @@ import {
 } from 'recharts';
 
 import './CSS/Management.ChartStyle.css';
-import VolDChart from './charts/VolDChart';
-import AmpDChart from './charts/AmpDChart';
-import MotorAreaChart from './charts/MotorAreaChart';
+import DriveTempDC from './charts/DriveTempDC';
+import MotorTempDC from './charts/MotorTempDC';
+import MotorAreaChart from './charts/TorqueAC';
 
 export default class ManagementDoughChart extends Component {
 
@@ -19,27 +19,29 @@ export default class ManagementDoughChart extends Component {
     return (
       <div>
         <Container className="parameter-display">
-          <Row style={{ width: "100%" }}>
-            <Col  md="6">
-            <div className="current-box"
+          <Row className="radial-box" >
+            <Col md={{ size: 4 }} style={{ marginLeft: "2.5rem" }}>
+              <div className="drive-temp-box" >
+                <DriveTempDC />
+              </div>
+            </Col>
+            <Col md={{ size: 4 }} style={{ marginLeft: "2.5rem" }}>
+              <div className="motor-temp-box"
                 style={{ marginBottom: "2rem" }}
               >
-                <AmpDChart/>
-              </div>
-            </Col>
-            <Col md="6">
-              <div className="voltage-box" >
-                <VolDChart/>
+                <MotorTempDC />
               </div>
             </Col>
           </Row>
-          <Row>
-            <Col>
-            <ResponsiveContainer className = "motor-area-chart">
-              <MotorAreaChart />
-            </ResponsiveContainer>
+
+          <Row style={{height: "100%", justifyContent: "center" }} > 
+            <Col md="8" >
+              <ResponsiveContainer className="motor-area-chart" >
+                <MotorAreaChart />
+              </ResponsiveContainer>
             </Col>
           </Row>
+
         </Container>
 
       </div>

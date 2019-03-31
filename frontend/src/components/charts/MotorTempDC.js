@@ -1,19 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux';
-import {
-    RadialBarChart,
-    RadialBar
-} from 'recharts';
 import PropTypes from 'prop-types';
 import io from "socket.io-client";
 
-import '../CSS/Management.DCStyle.css';
+import DoughnutChart from './DoughnutChart';
 import { getMotor } from '../../actions/motorAction';
 
 
 const socket = io('http://localhost:5000');
 
-class AmpDChart extends Component {
+class MotorTempDC extends Component {
 
     state = {
         data: [
@@ -35,7 +31,8 @@ class AmpDChart extends Component {
         const {data} = this.state; 
         return (
             <div>
-                <div className="text">{data[0].amp.toString().slice(0,4)}%</div>
+                <DoughnutChart data={data.concat([])} Tkey="amp"></DoughnutChart>
+                {/* <div className="text">{data[0].amp.toString().slice(0,4)}%</div>
                 <RadialBarChart
                     height={230}
                     width={230}
@@ -55,28 +52,28 @@ class AmpDChart extends Component {
                         dataKey={"amp"}
                     />
                     
-                </RadialBarChart>
+                </RadialBarChart> */}
             </div>
         )
     }
 
     componentDidMount() {
         this.props.getMotor();
-        socket.emit("subscribeMotorData"); // get cycled-data from server
+
         socket.on("apiMotorData", function (motorObj) {
             this.newData[0].amp = motorObj.amp;
-            this.setState((state) => {
-                return {
-                    data: state.data.slice()
-                }
-            });
+            // this.setState((state) => {
+            //     return {
+            //         data: state.data
+            //     }
+            // });
             this.setState((state) => {
                 return {
                     data: this.newData
                 }
             });
         }.bind(this));
-        console.log(this.state.data[0].amp);
+
     };
 
     componentWillUnmount() {
@@ -84,7 +81,7 @@ class AmpDChart extends Component {
     };
 }
 
-AmpDChart.propTypes = {
+MotorTempDC.propTypes = {
     getMotor: PropTypes.func.isRequired,
     motor: PropTypes.object.isRequired
 }
@@ -94,4 +91,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, { getMotor })(AmpDChart);
+export default connect(mapStateToProps, { getMotor })(MotorTempDC);
