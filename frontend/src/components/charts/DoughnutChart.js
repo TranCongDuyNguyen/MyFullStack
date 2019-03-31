@@ -5,17 +5,11 @@ import {
 } from 'recharts';
 
 export default class DoughnutChart extends Component {
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.data !== this.props.data) {
-            console.log(this.props.data);
-        }
-       // debugger;
-    }
     render() {
-        const { data, Tkey } = this.props;
+        const { data, dataKey } = this.props;
         return (
             <div>
-                <div className="text">{data[0][Tkey].toString().slice(0, 4)}%</div>
+                <div className="text">{data[0][dataKey].toString().slice(0, 4)}%</div>
                 <RadialBarChart height={230}
                     width={230}
                     innerRadius="50%"
@@ -31,7 +25,7 @@ export default class DoughnutChart extends Component {
                         dataKey={"refKey"} />
                     <RadialBar minAngle={15}
                         clockWise={true}
-                        dataKey={Tkey}
+                        dataKey={dataKey}
                     />
                 </RadialBarChart>
             </div>

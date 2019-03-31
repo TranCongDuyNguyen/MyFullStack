@@ -50,18 +50,8 @@ const client = mqtt.connect('mqtt://127.0.0.1:1883', {
 	password: "admin"
 });
 
-const client1 = mqtt.connect('mqtt://127.0.0.1:1883', {
-	clientId: "my-client1",
-	username: "admin",
-	password: "admin"
-});
-
 client.on("connect", function () {
 	console.log("MQTT connected");
-});
-
-client1.on("connect", function () {
-	console.log("MQTT 1 connected");
 });
 
 client.on("error", function (err) {
@@ -69,40 +59,79 @@ client.on("error", function (err) {
 	client.end();
 })
 
-client.subscribe('tcdn', function (err) {
+client.subscribe('n', function (err) {
 	console.log(err);
 });
-client1.subscribe('tcdn/torque', function (err) {
+client.subscribe('n/torque', function (err) {
 	console.log(err);
 })
+client.subscribe('n/status', function (err) {
+	console.log(err);
+})
+
 //trending initial var
-let dataBuffer = [{
+let torqueBuffer = [{
 	torque: 0,
 	time: 0
 }];
-let data = {};
+let ampereBuffer = [{
+	ampere: 0,
+	time: 0
+}];
+let torqueObj = {};
+let ampereObj = {};
 let time = 0;
+//trending MQTT transfer
+client.on("message", function (topic, message) {
+	if (topic === "n/torque") {
+		time += 1;
 
-client1.on("message", function (topic, message) {
-	data = JSON.parse(message.toString());
-	data.time = ++time;
-	dataBuffer.push(data);
-	if( dataBuffer.length >= 10 ) {
-		dataBuffer.splice(0,1)
-	}	
+		torqueObj = {
+			...torqueObj,
+			torque: JSON.parse(message.toString()).torque
+		};
+		torqueObj.time = time;
+
+		torqueBuffer.push(torqueObj);
+		if (torqueBuffer.length >= 10) {
+			torqueBuffer.splice(0, 1)
+		}
+
+		ampereObj = {
+			...ampereObj,
+			ampere: JSON.parse(message.toString()).ampere
+		};
+		ampereObj.time = time;
+
+		ampereBuffer.push(ampereObj);
+		if (ampereBuffer.length >= 10) {
+			ampereBuffer.splice(0, 1)
+		}
+	}
+
 })
-
+//doughnut MQTT, io transfer and trend io transfer
 io.on('connection', function (socket) {
 	console.log('server-side socket connected');
 
-
+	//doughnut
 	client.on("message", function (topic, message) {
-		socket.emit("apiMotorData", JSON.parse(message.toString()));
+		if (topic === "n") {
+			socket.emit("apiTData", JSON.parse(message.toString()));
+		}
 	});
+	//status
+	client.on("message", function(topic, message) {
+		if (topic === "n/status") {
+			socket.emit("apiStatus", message.toString());
+			console.log(message.toString());
+		}
+	})
 
-	let id1 = setInterval(function() {
-		console.log(dataBuffer);
-		socket.emit("apiTorque", dataBuffer);
+	let id1 = setInterval(function () {
+		//console.log(torqueBuffer);
+		socket.emit("apiTorque", torqueBuffer);
+		socket.emit("apiAmpere", ampereBuffer);
 	}, 11000);
 
 	socket.on("disconnect", () => {
@@ -112,14 +141,6 @@ io.on('connection', function (socket) {
 	});
 });
 
-	
-// client1.on("message", function (topic, message) {
-// 	data = JSON.parse(message.toString());
-// 	data.time = ++time;
-// 	if( dataBuffer.length >= 10 ) {
-// 		dataBuffer.splice(0,1)
-// 	}
-// 	dataBuffer.push(data);
-// })
+
 
 

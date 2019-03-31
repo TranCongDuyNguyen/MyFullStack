@@ -28,31 +28,10 @@ class MotorTempDC extends Component {
     newData = JSON.parse(JSON.stringify(this.state.data)); //deep clone
 
     render() {
-        const {data} = this.state; 
+        const { data } = this.state;
         return (
             <div>
-                <DoughnutChart data={data.concat([])} Tkey="amp"></DoughnutChart>
-                {/* <div className="text">{data[0].amp.toString().slice(0,4)}%</div>
-                <RadialBarChart
-                    height={230}
-                    width={230}
-                    innerRadius="50%"
-                    outerRadius="80%"
-                    startAngle={360}
-                    endAngle={0}
-                    data={data}
-                    barSize={120}
-                    barCategoryGap={1}
-                >
-                    <RadialBar minAngle={15}
-                        clockWise={true}
-                        dataKey={"refKey"} />
-                    <RadialBar minAngle={15}
-                        clockWise={true}
-                        dataKey={"amp"}
-                    />
-                    
-                </RadialBarChart> */}
+                <DoughnutChart data={data.concat([])} dataKey="amp"></DoughnutChart>
             </div>
         )
     }
@@ -60,13 +39,8 @@ class MotorTempDC extends Component {
     componentDidMount() {
         this.props.getMotor();
 
-        socket.on("apiMotorData", function (motorObj) {
+        socket.on("apiTData", function (motorObj) {
             this.newData[0].amp = motorObj.amp;
-            // this.setState((state) => {
-            //     return {
-            //         data: state.data
-            //     }
-            // });
             this.setState((state) => {
                 return {
                     data: this.newData

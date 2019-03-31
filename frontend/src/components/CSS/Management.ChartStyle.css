@@ -1,6 +1,5 @@
 .container.parameter-display {
-    
-    height: 18rem;
+    height: 13rem;
 }
 .container.parameter-display .text {
         font-size: 1.6rem;
@@ -11,13 +10,13 @@
 .parameter-display .motor-temp-box {
     color: white;
     border: solid 0.04em rgba(255, 255, 255, 0.452); 
+    border-radius: 1.4em;
+    box-shadow: 0 0 0.4em 0.1em rgb(199, 255, 236);
     background-color: #000;
     margin-bottom: 2rem;
     height: 8.8em;
     width: 12em;
     margin-top: 2em;
-    border-radius: 1.4em;
-    box-shadow: 0 0 0.4em 0.1em rgb(199, 255, 236);
     position: relative;
 }
 .parameter-display .drive-temp-box {
@@ -32,13 +31,7 @@
     box-shadow: 0 0 0.4em 0.1em #ffc7c7ff;
     position: relative;
 }
-.recharts-cartesian-axis-line {
-    stroke: white;
-}
-.recharts-cartesian-axis-tick {    
-    font-size: 0.8rem;
-    font-family: Roboto, sans-serif;
-}
+
 .parameter-display .radial-box .recharts-wrapper {
     position: absolute;
     top: -2.8rem;
@@ -51,18 +44,41 @@
     color: white;
 }
 
-.recharts-responsive-container.motor-area-chart{
+
+.recharts-cartesian-axis-line {
+    stroke: white;
+}
+.recharts-cartesian-axis-tick {    
+    font-size: 0.8rem;
+    font-family: Roboto, sans-serif;
+}
+
+.recharts-responsive-container.motor-area-chart.torque{
     height: 100%!important;
     position: absolute;
-    top: 0em;
+    top: 2em;
+    left: 0em;
+}
+
+.recharts-responsive-container.motor-area-chart.ampere{
+    height: 100%!important;
+    position: absolute;
+    top: 1em;
     left: 0em;
 }
 .recharts-responsive-container.motor-area-chart .recharts-surface {
     height: 24rem;
     width: 40rem;
 }
-.recharts-responsive-container.motor-area-chart .recharts-wrapper {
-    right: -0.8rem;
+.recharts-responsive-container.motor-area-chart.torque .recharts-wrapper {
+    right: -5.8rem;
+    top: 0rem;
+    height: 100%!important;
+    margin: 0!important;
+}
+
+.recharts-responsive-container.motor-area-chart.ampere .recharts-wrapper {
+    right: -5.8rem;
     top: 0rem;
     height: 100%!important;
     margin: 0!important;
@@ -79,9 +95,15 @@
         height: 15rem;
         width: 23rem;
     }
-    .recharts-responsive-container.motor-area-chart .recharts-wrapper {
-        right: 1.2rem;
-        top: -4rem;
+    .recharts-responsive-container.motor-area-chart.torque .recharts-wrapper {
+        right: -0.8rem;
+        top: -3rem;
+        height: 15rem;
+        width: 23rem;
+    }
+    .recharts-responsive-container.motor-area-chart.ampere .recharts-wrapper {
+        right: -0.8rem;
+        top: -14rem;
         height: 15rem;
         width: 23rem;
     }
