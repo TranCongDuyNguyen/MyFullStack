@@ -7,7 +7,7 @@ export default class MotorAreaChart extends Component {
     state = {
         data: [{
             time: 0,
-            amp: 0
+            motorT: 0
         }]
     }
 
@@ -15,10 +15,10 @@ export default class MotorAreaChart extends Component {
         return (
             <div>
                 <TrendChart data={this.state.data}
-                    dataKey="amp"
-                    yAxisName="Current (A)"
-                    customColor="#45F0DF"
-                    colorId="currentTC"></TrendChart>
+                    dataKey="motorT"
+                    yAxisName={`Thermal (&deg;C)`}
+                    customColor="#AD343E"
+                    colorId="motorTTC"></TrendChart>
             </div>
         )
     }

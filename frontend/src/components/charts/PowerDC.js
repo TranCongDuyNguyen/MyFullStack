@@ -3,12 +3,12 @@ import io from "socket.io-client";
 
 import DoughnutChart from './DoughnutChart';
 
-export default class DriveTempDC extends Component {
+export default class CurrentDC extends Component {
     state = {
         data: [
             {
-                name: "DriveTemp",
-                driveT: 40
+                name: "Power",
+                power: 50
             },
             {
                 name: "Ref",
@@ -22,16 +22,17 @@ export default class DriveTempDC extends Component {
     render() {
         const { data } = this.state;
         return (
-            <div className="driveT-dc">
+            <div className="power-dc">
                 <DoughnutChart data={data.concat([])}
-                    dataKey="driveT"
+                    dataKey="power"
                     threshold={60}
                     offset={20}
-                    colorId="driveT"
-                    startGradColor="#FFF275"
-                    endGradColor="#fd1d1d"
-                    theUnit = "&deg;C"
-                    flash={this.state.flash}></DoughnutChart>
+                    colorId="power"
+                    startGradColor="#84fab0"
+                    endGradColor="#8fd3f4"
+                    theUnit = "W"
+                    flash={this.state.flash}>
+                </DoughnutChart>
             </div>
         )
     }
@@ -40,13 +41,13 @@ export default class DriveTempDC extends Component {
         this.socket = io("http://localhost:5000", { transports: ['websocket'] }).connect();
         this.socket.emit("subscribeMotorData"); // get cycled-data from server
         this.socket.on("apiDCData", function (motorObj) {
-            this.newData[0].driveT = motorObj.driveT;
+            this.newData[0].power = motorObj.power;
             this.setState((state) => {
                 return {
                     data: this.newData
                 }
             });
-            if (motorObj.driveT > 80) {
+            if(motorObj.power > 80) {
                 this.setState({
                     flash: !this.state.flash
                 })

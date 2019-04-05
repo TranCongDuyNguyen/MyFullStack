@@ -11,7 +11,8 @@ import { loadUser } from './actions/authAction';
 
 import ListItemPage from './components/pages/ListItemPage';
 import ManagementPage from './components/pages/ManagementPage';
-
+import MonitorPage from './components/pages/MonitorPage';
+require('dotenv').config();
 class App extends Component {
   
   componentDidMount() {
@@ -26,6 +27,7 @@ class App extends Component {
             <TopNavBar/>
             {/*<Users/>*/}
             <Route exact path="/" component={Landing} />
+            <Route exact path="/monitor" component={MonitorPage}/>
             <PrivateRoute exact path="/itemlist" component={ListItemPage}/>
             <PrivateRoute exact path="/management" component={ManagementPage}/> 
           </div>

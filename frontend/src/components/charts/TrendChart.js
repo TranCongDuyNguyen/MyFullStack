@@ -7,12 +7,14 @@ import {
   Area
 } from 'recharts';
 
+import "../CSS/AreaChartStyle.css";
+
 export default class TrendChart extends Component {
   render() {
     const { data, dataKey, yAxisName, customColor, colorId } = this.props
     return (
       <div>
-        <AreaChart width={720} height={360} data={data}
+        <AreaChart width={450} height={200} data={data}
           padding={{ top: 20, right: 0, left: 0, bottom: 0 }}
           margin={{ top: 0, right: 0 }}>
           <defs>
@@ -30,16 +32,17 @@ export default class TrendChart extends Component {
             wrapperStyle={{ backgroundColor: "#EFF6E0", boxShadow: "0 0 0.4em 0.1em #009999ff" }}
             labelStyle={{ color: "#301014" }}
             itemStyle={{ color: "#0D0A0B" }}
-            formatter={function(value, name) {
+            formatter={function (value, name) {
               return `${value}`;
             }}
-            labelFormatter={function(value) {
+            labelFormatter={function (value) {
               return `Time: ${value}`;
-            }}/>
-          <Area type="monotone" 
-                dataKey={dataKey} 
-                stroke={customColor} 
-                fillOpacity={1} fill={`url(#${colorId})`} />
+            }} />
+          <Area type="monotone"
+            dot={true}
+            dataKey={dataKey}
+            stroke={customColor}
+            fillOpacity={1} fill={`url(#${colorId})`} />
 
         </AreaChart>
       </div>

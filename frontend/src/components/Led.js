@@ -4,20 +4,19 @@ import './CSS/LedStyle.css';
 
 export default class Led extends Component {
     render() {
-        const {customColor, customOfShadow, customShadowText} = this.props;
+        const {customColor, customShadow, customShadowOfText} = this.props;
         return (
             <div className="container-box">
                 <div className="led-box">
-                    <div style={{
+                    <div className="led" 
+                    style={{
                         margin: "0 auto",
-                        width: "2em",
-                        height: "2em",
                         backgroundColor: `${customColor}`,
                         borderRadius: "50%",
-                        boxShadow: `${customOfShadow}`
+                        boxShadow: `${customShadow}`
                     }}></div>
-                    <br/>
-                    <p style={{boxShadow: `${customShadowText}`}}>{this.props.children}</p>
+                
+                    <p style={{boxShadow: `${customShadowOfText}`}}>{this.props.children}</p>
                 </div>
             </div >
         )

@@ -3,8 +3,6 @@ import io from "socket.io-client";
 
 import TrendChart from './TrendChart';
 
-const socket = io('http://localhost:5000');
-
 export default class MotorAreaChart extends Component {
   state = {
     data: [{
@@ -19,14 +17,15 @@ export default class MotorAreaChart extends Component {
         <TrendChart data={this.state.data}
           dataKey="torque"
           yAxisName="Torque (N/m)"
-          customColor="#8884d8"
-          colorId="torque"></TrendChart>
+          customColor="#6F2DBD"
+          colorId="torqueTC"></TrendChart>
       </div>
     )
   }
 
   componentDidMount() {
-    socket.on("apiTorque", function (torqueBuffer) {
+    this.socket = io("http://localhost:5000", {transports: ['websocket']}); 
+    this.socket.on("apiTorque", function (torqueBuffer) {
 
       this.setState((state) => {
         return {
@@ -37,6 +36,10 @@ export default class MotorAreaChart extends Component {
   }
 
   componentWillUnmount() {
-    socket.disconnect();
+    this.socket.disconnect();
+    this.socket.on("connect_error", function(error) {
+      console.log(error);
+      this.socket.disconnect();
+  })
   };
 }

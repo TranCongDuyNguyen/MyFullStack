@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import io from "socket.io-client";
 
 import DoughnutChart from './DoughnutChart';
-import { getMotor } from '../../actions/motorAction';
 
-class MotorTempDC extends Component {
-
+export default class CurrentDC extends Component {
     state = {
         data: [
             {
-                name: "MotorTemp",
-                motorT: 50
+                name: "Torque",
+                torque: 60
             },
             {
                 name: "Ref",
@@ -26,32 +22,32 @@ class MotorTempDC extends Component {
     render() {
         const { data } = this.state;
         return (
-            <div>
+            <div className="torque-dc">
                 <DoughnutChart data={data.concat([])}
-                    dataKey="motorT"
+                    dataKey="torque"
                     threshold={60}
                     offset={20}
-                    colorId="motorT"
-                    startGradColor="#FFF275"
-                    endGradColor="#fd1d1d"
-                    theUnit = "&deg;C"
-                    flash={this.state.flash}
-                ></DoughnutChart>
+                    colorId="torque"
+                    startGradColor="#56bc2f"
+                    endGradColor="#a8e063"
+                    theUnit = "Nm"
+                    flash={this.state.flash}>
+                </DoughnutChart>
             </div>
         )
     }
 
     componentDidMount() {
-        this.props.getMotor();
-        this.socket = io("http://localhost:5000", { transports: ['websocket'] })
+        this.socket = io("http://localhost:5000", { transports: ['websocket'] }).connect();
+        this.socket.emit("subscribeMotorData"); // get cycled-data from server
         this.socket.on("apiDCData", function (motorObj) {
-            this.newData[0].motorT = motorObj.motorT;
+            this.newData[0].torque = motorObj.torque;
             this.setState((state) => {
                 return {
                     data: this.newData
                 }
             });
-            if (motorObj.motorT > 80) {
+            if (motorObj.torque > 80) {
                 this.setState({
                     flash: !this.state.flash
                 })
@@ -66,16 +62,5 @@ class MotorTempDC extends Component {
             this.socket.disconnect();
         })
     };
+
 }
-
-MotorTempDC.propTypes = {
-    getMotor: PropTypes.func.isRequired,
-    motor: PropTypes.object.isRequired
-}
-
-const mapStateToProps = state => {
-    return { motor: state.motor };
-}
-
-
-export default connect(mapStateToProps, { getMotor })(MotorTempDC);

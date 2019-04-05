@@ -68,73 +68,119 @@ client.subscribe('n/torque', function (err) {
 client.subscribe('n/status', function (err) {
 	console.log(err);
 })
+client.subscribe('n/realFreq', function (err) {
+	console.log(err);
+})
+client.subscribe('n/oTime', function (err) {
+	console.log(err);
+})
 
 //trending initial var
 let torqueBuffer = [{
 	torque: 0,
 	time: 0
 }];
-let ampereBuffer = [{
-	ampere: 0,
+let ampBuffer = [{
+	amp: 0,
 	time: 0
 }];
 let torqueObj = {};
-let ampereObj = {};
+let ampObj = {};
+let motorTObj = {};
+let driveTObj = {};
+let powerObj = {};
 let time = 0;
+let today = new Date();
+
 //trending MQTT transfer
 client.on("message", function (topic, message) {
-	if (topic === "n/torque") {
-		time += 1;
+	try{
+		if (topic === "n") {
+			time += 1;
 
-		torqueObj = {
-			...torqueObj,
-			torque: JSON.parse(message.toString()).torque
-		};
-		torqueObj.time = time;
+			torqueObj = {
+				...torqueObj,
+				torque: JSON.parse(message.toString()).torque
+			};
+			if(time ===1) {
 
-		torqueBuffer.push(torqueObj);
-		if (torqueBuffer.length >= 10) {
-			torqueBuffer.splice(0, 1)
+			}
+			torqueObj.time = time;
+	
+			torqueBuffer.push(torqueObj);
+			if (torqueBuffer.length >= 10) {
+				torqueBuffer.splice(0, 1)
+			}
+	
+			ampObj = {
+				...ampObj,
+				amp: JSON.parse(message.toString()).amp
+			};
+			ampObj.time = time;
+	
+			ampBuffer.push(ampObj);
+			if (ampBuffer.length >= 10) {
+				ampBuffer.splice(0, 1)
+			}
 		}
-
-		ampereObj = {
-			...ampereObj,
-			ampere: JSON.parse(message.toString()).ampere
-		};
-		ampereObj.time = time;
-
-		ampereBuffer.push(ampereObj);
-		if (ampereBuffer.length >= 10) {
-			ampereBuffer.splice(0, 1)
-		}
+	}	catch(e) {
+			console.log("because of undefined data from mqtt fake client");
 	}
-
+	
 })
 //doughnut MQTT, io transfer and trend io transfer
 io.on('connection', function (socket) {
 	console.log('server-side socket connected');
-
+	socket.on("error", (error) => {
+		console.log(error);
+		socket.disconnect();
+	})
 	//doughnut
 	client.on("message", function (topic, message) {
 		if (topic === "n") {
-			socket.emit("apiTData", JSON.parse(message.toString()));
+			try{
+				socket.emit("apiDCData", JSON.parse(message.toString()));
+			} catch(e) {
+				console.log("because of undefined data from mqtt fake client");
+			}
 		}
 	});
 	//status
-	client.on("message", function(topic, message) {
+	client.on("message", function (topic, message) {
 		if (topic === "n/status") {
-			socket.emit("apiStatus", message.toString());
-			console.log(message.toString());
+			socket.emit("apiStatus", JSON.parse(message.toString()));
 		}
 	})
-
+	//frequency
+	client.on("message", function (topic, message) {
+		if (topic === "n/realFreq") {
+			socket.emit("realFrequency", message.toString());
+		}
+	})
+	//otime
+	client.on("message", function (topic, message) {
+		if (topic === "n/oTime") {
+			socket.emit("oTime", message.toString());
+		}
+	})
+	//trending
 	let id1 = setInterval(function () {
 		//console.log(torqueBuffer);
 		socket.emit("apiTorque", torqueBuffer);
-		socket.emit("apiAmpere", ampereBuffer);
+		socket.emit("apiAmpere", ampBuffer);
 	}, 11000);
-
-	socket.on("disconnect", () => {
+	//client publishing
+	socket.on("setFrequency", function (frequency) {
+		client.publish("n/setFreq", frequency, function (err) {
+			console.log(err);
+			console.log(frequency);
+		})
+	})
+	socket.on("disconnect", (reason) => {
+		if (reason === 'io server disconnect') {
+			// the disconnection was initiated by the server, you need to reconnect manually
+			socket.connect();
+		}
 		time = 0;
 		clearInterval(id1);
 		console.log("Disconnect");

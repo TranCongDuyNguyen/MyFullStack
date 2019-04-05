@@ -35,7 +35,7 @@ class Landing extends Component {
               <CardBody>
                 <CardTitle>Management</CardTitle>
                 <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                <Button href="/management" right><img className="arrow-btn" src={ArrowButton} alt=""></img></Button>
+                <Button href="/management" right="true"><img className="arrow-btn" src={ArrowButton} alt=""></img></Button>
               </CardBody>
             </Card>
           </Col>
@@ -46,7 +46,7 @@ class Landing extends Component {
               <CardBody>
                 <CardTitle>Navigation</CardTitle>
                 <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                <Button right><img className="arrow-btn" src={ArrowButton} alt=""></img></Button>
+                <Button right="true"><img className="arrow-btn" src={ArrowButton} alt=""></img></Button>
               </CardBody>
             </Card>
           </Col>
@@ -57,7 +57,7 @@ class Landing extends Component {
               <CardBody>
                 <CardTitle>Virtualization</CardTitle>
                 <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
-                <Button right><img className="arrow-btn" src={ArrowButton} alt=""></img></Button>
+                <Button right="true"><img className="arrow-btn" src={ArrowButton} alt=""></img></Button>
               </CardBody>
             </Card>
           </Col>

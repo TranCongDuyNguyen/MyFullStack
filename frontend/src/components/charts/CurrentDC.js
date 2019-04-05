@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
 import io from "socket.io-client";
 
 import DoughnutChart from './DoughnutChart';
-import { getMotor } from '../../actions/motorAction';
 
-class MotorTempDC extends Component {
-
+export default class CurrentDC extends Component {
     state = {
         data: [
             {
-                name: "MotorTemp",
-                motorT: 50
+                name: "Current",
+                amp: 40
             },
             {
                 name: "Ref",
@@ -26,32 +22,32 @@ class MotorTempDC extends Component {
     render() {
         const { data } = this.state;
         return (
-            <div>
+            <div className="current-dc">
                 <DoughnutChart data={data.concat([])}
-                    dataKey="motorT"
+                    dataKey="amp"
                     threshold={60}
                     offset={20}
-                    colorId="motorT"
+                    colorId="current"
                     startGradColor="#FFF275"
-                    endGradColor="#fd1d1d"
-                    theUnit = "&deg;C"
-                    flash={this.state.flash}
-                ></DoughnutChart>
+                    endGradColor="#d0ed57"
+                    theUnit = "A"
+                    flash={this.state.flash}>
+                </DoughnutChart>
             </div>
         )
     }
 
     componentDidMount() {
-        this.props.getMotor();
-        this.socket = io("http://localhost:5000", { transports: ['websocket'] })
+        this.socket = io("http://localhost:5000", { transports: ['websocket'] }).connect();
+        this.socket.emit("subscribeMotorData"); // get cycled-data from server
         this.socket.on("apiDCData", function (motorObj) {
-            this.newData[0].motorT = motorObj.motorT;
+            this.newData[0].amp = motorObj.amp;
             this.setState((state) => {
                 return {
                     data: this.newData
                 }
             });
-            if (motorObj.motorT > 80) {
+            if(motorObj.amp > 80) {
                 this.setState({
                     flash: !this.state.flash
                 })
@@ -60,22 +56,11 @@ class MotorTempDC extends Component {
     };
 
     componentWillUnmount() {
+       this.socket.disconnect();
+       this.socket.on("connect_error", function(error) {
+        console.log(error);
         this.socket.disconnect();
-        this.socket.on("connect_error", function (error) {
-            console.log(error);
-            this.socket.disconnect();
-        })
+    })
     };
+
 }
-
-MotorTempDC.propTypes = {
-    getMotor: PropTypes.func.isRequired,
-    motor: PropTypes.object.isRequired
-}
-
-const mapStateToProps = state => {
-    return { motor: state.motor };
-}
-
-
-export default connect(mapStateToProps, { getMotor })(MotorTempDC);
